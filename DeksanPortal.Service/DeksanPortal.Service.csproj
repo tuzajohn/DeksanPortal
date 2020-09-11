@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeksanPortal.Core\DeksanPortal.Core.csproj" />
+    <ProjectReference Include="..\DeksanPortal.Data\DeksanPortal.Data.csproj" />
+  </ItemGroup>
+
+</Project>

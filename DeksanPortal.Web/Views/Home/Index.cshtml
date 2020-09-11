@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row" id="listing">
+   
+</div>
+
+
+
+@section scripts{
+    <script>
+
+        fetchBooks(0);
+
+        function fetchBooks(page) {
+
+
+
+            fetch(`${window.location.origin}/home/LoadLibrary?page=${page}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(response.statusText);
+                })
+                .then(result => {
+                    result.forEach(book => {
+                        console.log(book);
+                        let d = `
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <img src="${book.thumbnailUrl}" class="img-responsive"/>
+                                    <br />
+
+                                    <h3 class="padding-top-10">${book.name}</h3>
+                                    <a href='${window.location.origin}/books/index/${book.id}' class='btn btn-primary btn-block'>View/Read</a>
+                                </div>
+                            </div>
+                        </div>`;
+                        document.getElementById('listing').insertAdjacentHTML('beforeend', d);
+                    });
+
+
+                })
+                .catch(err => {
+                    _toastr('Oops, failed to process request', 'top-right', 'error', false);
+                    console.log(err);
+                });
+        }
+    </script>
+}

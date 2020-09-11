@@ -1,0 +1,107 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<section class="page-header">
+    <div class="container">
+
+        <h1>REGISTER</h1>
+
+        <!-- breadcrumbs -->
+        <ol class="breadcrumb">
+            <li class=""><a href="~/">Login</a></li>
+            <li class="active">Register</li>
+        </ol><!-- /breadcrumbs -->
+
+    </div>
+</section>
+<!-- /PAGE HEADER -->
+<!-- -->
+<section>
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-offset-3 col-sm-offset-3 col-md-6 col-sm-6">
+
+                @{
+                    if (!string.IsNullOrEmpty(Model?.Message))
+                    {
+                        <!-- ALERT -->
+
+                        <div class="alert alert-mini alert-danger margin-bottom-30">
+                            @Model.Message
+                        </div>
+
+                        <!-- /ALERT -->
+                    }
+                }
+                <!-- register form -->
+                <form class="nomargin sky-form boxed" action="/account/register" method="post">
+                    <header>
+                        <i class="fa fa-users"></i> Register
+                    </header>
+
+                    <fieldset class="nomargin">
+                        <label class="input margin-bottom-10">
+                            <i class="ico-append fa fa-envelope"></i>
+                            <input type="email" required placeholder="Email address" value="@Model?.Email" name="email">
+                            <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+                        </label>
+
+                        <label class="input margin-bottom-10">
+                            <i class="ico-append fa fa-lock"></i>
+                            <input type="password" required placeholder="Password" name="password">
+                            <b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+                        </label>
+
+                        <label class="input margin-bottom-10">
+                            <i class="ico-append fa fa-lock"></i>
+                            <input type="password" required placeholder="Confirm password" name="reppassword">
+                            <b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+                        </label>
+
+                        <div class="row margin-bottom-10">
+                            <div class="col-md-6">
+                                <label class="input">
+                                    <input type="text" required placeholder="First name" value="@Model?.FirstName" name="firstname">
+                                </label>
+                            </div>
+                            <div class="col col-md-6">
+                                <label class="input">
+                                    <input type="text" required placeholder="Last name" value="@Model?.LastName" name="lastname">
+                                </label>
+                            </div>
+                        </div>
+
+                        <label class="select margin-bottom-10 margin-top-20">
+                            <select name="gender" required>
+                                <option value="0" selected="" disabled="">Gender</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
+                            </select>
+                            <i></i>
+                        </label>
+
+                    </fieldset>
+
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> REGISTER</button>
+                        </div>
+                    </div>
+
+                </form>
+                <!-- /register form -->
+
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+<!-- / -->

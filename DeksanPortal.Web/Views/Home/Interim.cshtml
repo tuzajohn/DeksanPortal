@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<div class="row">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body" id="about-me">
+                <h2 class="title text-center">About You</h2>
+                <hr />
+
+                <form id="about_form">
+                    <!-- input -->
+                    <label>Occupation: </label>
+                    <div class="fancy-form">
+                        <i class="fa fa-newspaper-o"></i>
+
+                        <input type="tel" class="form-control" placeholder="Your occupation" id="occupation">
+
+                    </div>
+                    <br />
+                    <label>Highest level of education: </label>
+                    <!-- select -->
+                    <div class="fancy-form fancy-form-select">
+                        <select class="form-control" id="education">
+                            <option value="">Select education level</option>
+                            <option value="1">Primary</option>
+                            <option value="2">Secondary</option>
+                            <option value="4">University</option>
+                            <option value="8">Stay at home</option>
+                        </select>
+                        <i class="fancy-arrow-double"></i>
+                    </div>
+                    <div id="div_class" hidden>
+                        <br />
+                        <label>Class</label>
+                        <div class="fancy-form fancy-form-select">
+                            <select class="form-control" id="education_class">
+                                <option>Select class</option>
+                            </select>
+                            <i class="fancy-arrow"></i>
+                        </div>
+                    </div>
+                    <br />
+                    <label>Date of birth: </label>
+                    <!-- date picker -->
+                    <input type="text" class="form-control datepicker" data-format="yyyy-mm-dd" data-lang="en" data-RTL="false" id="dob">
+                    <br />
+                    <!-- input -->
+                    <label>Address: </label>
+                    <div class="fancy-form">
+                        <i class="fa fa-map-pin"></i>
+
+                        <input type="tel" class="form-control" placeholder="Your address" id="address">
+
+                    </div>
+                    <br />
+                    <!-- Primary -->
+                    <button type="button" class="btn btn-primary pull-right next_btn" data-current="about-me" data-next="preference-me">Next</button>
+                </form>
+            </div>
+            <div class="panel-body" id="preference-me" hidden>
+                <h2 class="title text-center">Preferences</h2>
+                <hr />
+
+                <form id="preferences_form">
+                    <!-- input -->
+                    <label>Type: </label>
+                    <div id="category_listings">
+                        
+                    </div>
+                    <br />
+                    <!-- Primary -->
+                    <button type="button" class="btn btn-primary pull-right submit">Submit</button>
+                    <button type="button" class="btn btn-primary pull-right prev_btn" data-previouse="about-me" data-current="preference-me">Previous</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.next_btn').click(e => {
+
+            var occupation = document.getElementById('occupation');
+            var dob = document.getElementById('dob');
+            var education = document.getElementById('education');
+            var education_class = document.getElementById('education_class');
+            var address = document.getElementById('address');
+
+
+            var model = {
+                occupation: occupation.value,
+                dob: dob.value,
+                EducationLevel: education.value,
+                EducationClass: education_class.value,
+                address: address.value
+            }
+
+            fetch(`${window.location.origin}/home/saveabout?address=${model.address}&dob=${model.dob}&EducationLevel=${model.EducationLevel}
+                            &EducationClass=${model.EducationClass}&address=${model.address}&occupation=${model.occupation}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(JSON.stringify({
+                        status: response.status,
+                        text: response.statusText
+                    }));
+                })
+                .then(result => {
+                    if (result.code === -1) {
+                        _toastr(result.message, 'top-right', 'warning', false);
+                        return;
+                    }
+
+                    var next = e.currentTarget.getAttribute('data-next');
+                    var current = e.currentTarget.getAttribute('data-current');
+
+                    document.getElementById(current).setAttribute('hidden', 'hidden');
+                    document.getElementById(next).removeAttribute('hidden');
+
+                })
+                .catch(err => {
+                    _toastr('Oops, sorry something went wrong.', 'top-right', 'error', false);
+                    console.log(err);
+                });
+
+        });
+        $('.prev_btn').click(e => {
+
+            var previous = e.currentTarget.getAttribute('data-previouse');
+            var current = e.currentTarget.getAttribute('data-current');
+
+
+            document.getElementById(current).setAttribute('hidden', 'hidden');
+            document.getElementById(previous).removeAttribute('hidden');
+
+
+            var selectedCategories = document.querySelectorAll('[data-category-selected="yes"]');
+            for (var i = 0; i < selectedCategories.length; i++) {
+                var selectedCategory = selectedCategories[i];
+                selectedCategory.setAttribute('data-category-selected', 'no');
+
+                selectedCategory.classList.remove('btn-warning');
+                selectedCategory.classList.add('btn-primary');
+            }
+
+        });
+
+        $('.submit').click(e => {
+            var selectedCategories = document.querySelectorAll('[data-category-selected="yes"]');
+            var categories = [];
+
+            var btn = e.currentTarget;
+
+            btn.innerHTML = 'Submitting';
+
+            for (var i = 0; i < selectedCategories.length; i++) {
+                var selectedCategory = selectedCategories[i];
+                var id = selectedCategory.getAttribute('data-selected-id');
+
+                categories.push(id);
+            }
+
+            fetch(`${window.location.origin}/home/SaveAll?categories=${categories}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(JSON.stringify({
+                        status: response.status,
+                        text: response.statusText
+                    }));
+                })
+                .then(result => {
+                    btn.innerHTML = 'Submit';
+                    if (result.code === -1) {
+                        _toastr(result.message, 'top-right', 'warning', false);
+                        return;
+                    }
+                    _toastr('Great, information has been updated', 'top-right', 'success', false);
+                    setTimeout(() => {
+                        window.location.href = window.location.origin + '/home/';
+                    }, 1000);
+
+                })
+                .catch(err => {
+                    _toastr('Oops, sorry something went wrong.', 'top-right', 'error', false);
+                    console.log(err);
+                });
+
+
+        })
+
+
+        $(document).on('click', '.cat', (e) => {
+            var selectedState = e.currentTarget.getAttribute('data-category-selected');
+            var classList = e.currentTarget.classList;
+
+            if (selectedState === 'no') {
+                classList.remove('btn-primary');
+                classList.add('btn-warning');
+                e.currentTarget.setAttribute('data-category-selected', 'yes');
+            }
+            if (selectedState === 'yes') {
+                classList.remove('btn-warning');
+                classList.add('btn-primary');
+                e.currentTarget.setAttribute('data-category-selected', 'no');
+            }
+
+        });
+
+        $('#education').change((e) => {
+            var value = e.currentTarget.value;
+            fetchClasses(value, 'education_class', 'div_class');
+        });
+
+        function categories() {
+            fetch(`${window.location.origin}/home/GetCategories`)
+                .then(response => response.json())
+                .then(result => {
+                    var l = '';
+                    result.forEach((cat, index) => {
+                        l += `<button type="button" class="btn btn-primary cat margin-right-10" data-category-selected="no" data-selected-id="${cat.id}">${cat.name}</button>`;
+                    });
+                    if (result.length > 0) {
+                        document.getElementById('category_listings').innerHTML = l;
+                    }
+                })
+        }
+        categories();
+        function fetchClasses(level, element, unhide = null) {
+            fetch(`${window.location.origin}/home/getclass?lvl=${level}`)
+                .then(response => response.json())
+                .then(result => {
+                    let d = '<option value="">Select class</option>';
+
+                    result.forEach(_class => {
+                        d += `<option value='${_class.id}'>${_class.name}</option>`;
+                    });
+
+                    if (result.length > 0) {
+                        document.getElementById(element).innerHTML = d;
+
+                        if (unhide) {
+                            document.getElementById(unhide).removeAttribute('hidden');
+                        }
+
+                    } else {
+                        if (unhide) {
+                            document.getElementById(unhide).setAttribute('hidden', 'hidden');
+                        }
+                    }
+                });
+        }
+    </script>
+ }

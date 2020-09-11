@@ -1,0 +1,630 @@
+﻿
+@{
+    ViewData["Title"] = "Library";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@section bread{
+    <!-- page title -->
+    <header id="page-header">
+        <h1>Library</h1>
+        <ol class="breadcrumb">
+            <li><a href="~/dashboard">Dashboard</a></li>
+            <li class="active">Library</li>
+        </ol>
+    </header>
+    <!-- /page title -->
+}
+
+<!-- Fullwidth Modal >-->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-categories-modal">Add a Categories</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-class-modal">Add a class</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-book-modal">Add a book</button>
+<hr />
+<div id="panel-misc-portlet-categories" class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <span class="elipsis">
+            <!-- panel title -->
+            <strong>Categories</strong>
+        </span>
+
+        <!-- right options -->
+        <ul class="options pull-right list-inline">
+            <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+            <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+        </ul>
+        <!-- /right options -->
+
+    </div>
+
+    <!-- panel content -->
+    <div class="panel-body">
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="datatable_sample">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="cat_tbody">
+                    <tr>
+                        <td colspan="4" class="text-center">No categries</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <!-- /panel content -->
+
+</div>
+
+
+<div id="panel-misc-portlet-l1" class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <span class="elipsis">
+            <!-- panel title -->
+            <strong>Books</strong>
+        </span>
+
+        <!-- right options -->
+        <ul class="options pull-right list-inline">
+            <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+            <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+        </ul>
+        <!-- /right options -->
+
+    </div>
+
+    <!-- panel content -->
+    <div class="panel-body">
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="book_dt">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Categories</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="book_tbody">
+                    <tr>
+                        <td colspan="5" class="text-center">No books</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <!-- /panel content -->
+
+</div>
+
+<div class="modal fade bs-book-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- header modal -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">New Book</h4>
+            </div>
+
+            <!-- body modal -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input class="custom-file-upload" type="file" id="resource" accept=".pdf" data-btn-text="Select a File" />
+                        <input class="custom-file-upload" type="file" id="file" accept=".jpeg,.jpg,.png" data-btn-text="Select a File" />
+                        <br />
+                        <figure class="margin-bottom-10">
+                            <!-- image -->
+                            <img class="img-responsive" id="img" src="~/admin/images/demo/9_full.jpg" alt="">
+                        </figure>
+                    </div>
+                    <div class="col-md-8">
+                        <label>Title</label>
+                        <div class="fancy-form">
+                            <i class="fa fa-newspaper-o"></i>
+
+                            <input type="tel" class="form-control" placeholder="Book title" id="book_title">
+
+                        </div>
+                        <br />
+                        <!-- classic select2 -->
+                        <label>Category</label>
+                        <!-- select -->
+                        <div class="fancy-form fancy-form-select">
+                            <select class="form-control" id="book_categories" multiple>
+                                <option>Select catories</option>
+                            </select>
+                            <i class="fancy-arrow"></i>
+                        </div>
+                        <br />
+                        <!-- select -->
+                        <label>Education level</label>
+                        <div class="fancy-form fancy-form-select">
+                            <select class="form-control" id="book_level">
+                                <option value="">Select education level</option>
+                                <option value="1">Primary</option>
+                                <option value="2">Secondary</option>
+                                <option value="4">University</option>
+                                <option value="8">Stay at home</option>
+                            </select>
+                            <i class="fancy-arrow"></i>
+                        </div>
+                        
+                        <div id="b_class" hidden>
+                            <br />
+                            <label>Class</label>
+                            <div class="fancy-form fancy-form-select">
+                                <select class="form-control" id="education_class">
+                                    <option>Select class</option>
+                                </select>
+                                <i class="fancy-arrow"></i>
+                            </div>
+                        </div>
+                        <br />
+                        <label>Description</label>
+                        <div class="fancy-form">
+                            <textarea rows="5" class="form-control word-count" id="book_description" data-maxlength="200" data-info="textarea-words-info" placeholder="Book description..."></textarea>
+
+                            <i class="fa fa-comments"><!-- icon --></i>
+
+                            <span class="fancy-hint size-11 text-muted">
+                                <strong>Hint:</strong> 200 words allowed!
+                                <span class="pull-right">
+                                    <span id="textarea-words-info">0/200</span> Words
+                                </span>
+                            </span>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save_book_btn">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bs-categories-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- header modal -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">New Category</h4>
+            </div>
+
+            <!-- body modal -->
+            <div class="modal-body">
+                <!-- input -->
+                <label>Name</label>
+                <div class="fancy-form">
+                    <i class="fa fa-newspaper-o"></i>
+
+                    <input type="tel" class="form-control" placeholder="Category name, i.e.: life style" id="category_name">
+
+                </div>
+                <br />
+                <label>Description</label>
+                <div class="fancy-form">
+                    <textarea rows="5" class="form-control word-count" id="category_description" data-maxlength="200" data-info="textarea-words-info" placeholder="Category description..."></textarea>
+
+                    <i class="fa fa-comments"><!-- icon --></i>
+
+                    <span class="fancy-hint size-11 text-muted">
+                        <strong>Hint:</strong> 200 words allowed!
+                        <span class="pull-right">
+                            <span id="textarea-words-info">0/200</span> Words
+                        </span>
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save_category_btn">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-class-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- header modal -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">New Class</h4>
+            </div>
+
+            <!-- body modal -->
+            <div class="modal-body">
+                <label>Education level</label>
+                <div class="fancy-form fancy-form-select">
+                    <select class="form-control" id="class_level">
+                        <option value="">Select education level</option>
+                        <option value="1">Primary</option>
+                        <option value="2">Secondary</option>
+                        <option value="4">University</option>
+                        <option value="8">Stay at home</option>
+                    </select>
+                    <i class="fancy-arrow"></i>
+                </div>
+                <br />
+                <!-- input -->
+                <label>Name</label>
+                <div class="fancy-form">
+                    <i class="fa fa-newspaper-o"></i>
+
+                    <input type="tel" class="form-control" placeholder="Class name, i.e.: Primary On" id="class_name">
+
+                </div>
+                <br />
+                <label>Description</label>
+                <div class="fancy-form">
+                    <textarea rows="5" class="form-control word-count" id="class_description" data-maxlength="200" data-info="textarea-words-info" placeholder="Class description..."></textarea>
+
+                    <i class="fa fa-comments"><!-- icon --></i>
+
+                    <span class="fancy-hint size-11 text-muted">
+                        <strong>Hint:</strong> 200 words allowed!
+                        <span class="pull-right">
+                            <span id="textarea-words-info">0/200</span> Words
+                        </span>
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save_class_btn">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="~/admin/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/admin/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script>
+
+        $('#save_category_btn').click((e) => {
+            var name = document.getElementById('category_name');
+            var description = document.getElementById('category_description');
+            var btn = e.currentTarget;
+            btn.innerHTML = 'Saving....';
+            fetch(`${window.location.origin}/dashboard/AddCategory?name=${name.value}&description=${description.value}`)
+                .then(response => response.json())
+                .then(result => {
+                    btn.innerHTML = 'Save';
+                    if (result.code === -1) {
+                        _toastr(result.message, "top-right", "error", false);
+                        return;
+                    }
+
+                    name.value = '';
+                    description.value = '';
+
+                    _toastr(result.message, "top-right", "success", false);
+                    categories();
+                })
+        });
+        $('#save_book_btn').click((e) => {
+            var title = document.getElementById('book_title');
+            var description = document.getElementById('book_description');
+            var level = document.getElementById('book_level');
+            var _class = document.getElementById('education_class');
+            var book_categories = document.getElementById('book_categories');
+            var thumbnail = document.getElementById('file');
+            var resource = document.getElementById('resource');
+            var btn = e.currentTarget;
+            btn.innerHTML = 'Saving....';
+
+            var model_m = {
+                title: title.value,
+                description: description.value,
+                educationLevel: level.value,
+                classLevel: _class.value,
+                resource: resource.files[0],
+                categories: getSelectValues(book_categories),
+                thumbnailUrl: thumbnail.files[0]
+            };
+
+            var form_data = new FormData();
+
+            for (var key in model_m) {
+                form_data.append(key, model_m[key]);
+            }
+            $.ajax({
+                url: `${window.location.origin}/dashboard/addbook`,
+                data: form_data,
+                processData: false,
+                contentType: false,
+                type: 'POST'
+            }).done(function (data) {
+                btn.innerHTML = 'Save';
+
+                if (data.code === -1) {
+                    _toastr(data.message, 'top-right', 'warning', false);
+                    return;
+                }
+
+                _toastr(data.message, 'top-right', 'success', false);
+            })
+                .fail(function (err) {
+                    btn.innerHTML = 'Save';
+                    _toastr('Failed to save book', 'top-right', 'error', false);
+                    console.log(err);
+                });
+
+        });
+        $('#save_class_btn').click((e) => {
+            var btn = e.currentTarget;
+            var name = document.getElementById('class_name');
+            var level = document.getElementById('class_level');
+            var description = document.getElementById('class_description');
+
+            btn.innerHTML = 'Saving...';
+
+            fetch(`${window.location.origin}/dashboard/addclass?name=${name.value}&level=${level.value}&description=${description.value}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.code === -1) {
+                        _toastr(result.message, 'top-right', 'warning', false);
+                        return;
+                    }
+
+                    _toastr(result.message, 'top-right', 'success', false);
+
+                    name.value = '';
+                    description.value = '';
+
+                })
+                .cat(err => {
+                    console.log(err);
+                    _toastr('Something went wrong', 'top-right', 'error', false);
+                });
+
+        });
+        $('#book_level').change((e) => {
+            var value = e.currentTarget.value;
+            fetchClasses(value, 'education_class', 'b_class');
+        });
+
+        $(document).on('click', '.edit', e => {
+            var btn = $(this);
+            var el = e.currentTarget;
+            alert(el.getAttribute('data-cat-edit'));
+        });
+
+        function categories() {
+            fetch(`${window.location.origin}/dashboard/GetCategories`)
+                .then(response => response.json())
+                .then(result => {
+                    let d = ``;
+                    let l = '<option>Select categories</option>';
+                    result.forEach((cat, index) => {
+                        index = index + 1;
+                        d += `
+                            <tr>
+                                <td>${index}</td>
+                                <td>${cat.name}</td>
+                                <td>${cat.description}</td>
+                                <td><button class='btn btn-info edit' data-cat-edit='${cat.id}'>edit</button></td>
+                            </tr>`;
+
+                        l += `<option value='${cat.id}'>${cat.name}</option>`;
+                    });
+                    if (result.length > 0) {
+                        document.getElementById('cat_tbody').innerHTML = d;
+                        document.getElementById('book_categories').innerHTML = l;
+                    }
+                    if (jQuery().dataTable) {
+
+                        var table = jQuery('#datatable_sample');
+                        table.dataTable({
+                            "columns": [{
+                                "orderable": true
+                            }, {
+                                "orderable": false
+                            }, {
+                                "orderable": false
+                            }],
+                            "lengthMenu": [
+                                [5, 15, 20, -1],
+                                [5, 15, 20, "All"] // change per page values here
+                            ],
+                            // set the initial value
+                            "pageLength": 5,
+                            "pagingType": "bootstrap_full_number",
+                            "language": {
+                                "lengthMenu": "  _MENU_ records",
+                                "paginate": {
+                                    "previous": "Prev",
+                                    "next": "Next",
+                                    "last": "Last",
+                                    "first": "First"
+                                }
+                            },
+                            "columnDefs": [{  // set default column settings
+                                'orderable': true,
+                                'targets': [0]
+                            }, {
+                                "searchable": false,
+                                "targets": [0]
+                            }],
+                            "order": [
+                                [0, "asc"]
+                            ] // set first column as a default sort by asc
+                        });
+
+                        var tableWrapper = jQuery('#datatable_sample_wrapper');
+
+                        tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+
+                    }
+                })
+        }
+
+        function books() {
+            fetch(`${window.location.origin}/dashboard/getbooks`)
+                .then(response => response.json())
+                .then(result => {
+                    let d = ``;
+                    result.forEach((book, index) => {
+                        index = index + 1;
+                        d += `
+                            <tr>
+                                <td>${book.position}</td>
+                                <td>${book.title}</td>
+                                <td>${book.categories}</td>
+                                <td>${book.description}</td>
+                                <td><button class='btn btn-info edit' data-cat-edit='${book.id}'>edit</button></td>
+                            </tr>`;
+
+                    });
+                    if (result.length > 0) {
+                        document.getElementById('book_tbody').innerHTML = d;
+                    }
+                    var _table = jQuery('#book_dt');
+                    _table.dataTable({
+                        "columns": [{
+                            "orderable": true
+                        }, {
+                            "orderable": false
+                        }, {
+                            "orderable": false
+                        }, {
+                            "orderable": false
+                        }, {
+                            "orderable": false
+                        }],
+                        "lengthMenu": [
+                            [5, 15, 20, -1],
+                            [5, 15, 20, "All"] // change per page values here
+                        ],
+                        // set the initial value
+                        "pageLength": 5,
+                        "pagingType": "bootstrap_full_number",
+                        "language": {
+                            "lengthMenu": "  _MENU_ records",
+                            "paginate": {
+                                "previous": "Prev",
+                                "next": "Next",
+                                "last": "Last",
+                                "first": "First"
+                            }
+                        },
+                        "columnDefs": [{  // set default column settings
+                            'orderable': true,
+                            'targets': [0]
+                        }, {
+                            "searchable": false,
+                            "targets": [0]
+                        }],
+                        "order": [
+                            [0, "asc"]
+                        ] // set first column as a default sort by asc
+                    });
+
+                    var tableWrapper = jQuery('#book_dt_wrapper');
+
+                    tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+                })
+        }
+
+
+        function fetchClasses(level, element, unhide = null) {
+            fetch(`${window.location.origin}/dashboard/getclass?lvl=${level}`)
+                .then(response => response.json())
+                .then(result => {
+                    let d = '';
+
+                    result.forEach(_class => {
+                        d += `<option value='${_class.id}'>${_class.name}</option>`;
+                    });
+
+                    if (result.length == 0) {
+                        _toastr('Please, provide a class for this education level', 'top-right', 'info', false);
+                    }
+
+                    if (result.length > 0) {
+                        document.getElementById(element).innerHTML = d;
+
+                        if (unhide) {
+                            document.getElementById(unhide).removeAttribute('hidden');
+                        }
+
+                    } else {
+                        if (unhide) {
+                            document.getElementById(unhide).setAttribute('hidden', 'hidden');
+                        }
+                    }
+                });
+        }
+
+        categories();
+        books();
+    </script>
+
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        $("#file").change(function () {
+            readURL(this);
+        });
+        function getSelectValues(select) {
+            var result = [];
+            var options = select && select.options;
+            var opt;
+
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                    result.push(opt.value || opt.text);
+                }
+            }
+            return result;
+        }
+    </script>
+}

@@ -1,0 +1,25 @@
+﻿@model DeksanPortal.Data.Models.Library
+@{
+    ViewData["Title"] = "Books";
+}
+
+
+
+@{
+    if (Model != default)
+    {
+        <div class="text-center">
+            <img src="@Model.ThumbnailUrl" class="img-responsive img-thumbnail" style="width:50%" />
+        </div>
+        <hr />
+        <h2>@Model.Name</h2>
+        <p>@Model.Description</p>
+        <a class="btn btn-link" target="_blank" href="@Model.ResourceUrl">@Model.Name</a>
+    }
+    else
+    {
+        <div class="alert alert-danger margin-bottom-30">
+            @ViewData["Error"]
+        </div>
+    }
+}
